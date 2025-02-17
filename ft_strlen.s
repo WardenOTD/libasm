@@ -1,14 +1,7 @@
-; asm is read top to bottom
-; int ft_strlen(char *str)
-; char *str is placed into rdi by default
-; rax is return value
-; parameters are passed into registers in this order:
-;   %rdi, %rsi, %rdx, %rcx, %r8, %r9
-;   remaining parameters are pushed into the stack in reverse order
-;   so when popped it will be in order
-
 section .note.GNU-stack			; versions binutils 2.39+ will raise a warning without this section
 
+; int ft_strlen(char *str)
+; char *str is placed into rdi by default
 section .text					; defines actual source code section
 	global ft_strlen			; exposes the starting point of the program
 
