@@ -1,4 +1,4 @@
-SRC			= ft_strlen.s \
+SRC			= ft_strlen.s ft_strcpy.s\
 
 OBJ			= $(SRC:.s=.o)
 
