@@ -1,4 +1,4 @@
-section .note.GNU-stack
+section .note.GNU-stack				; versions binutils 2.39+ will raise a warning without this section
 
 section .text
 	global ft_strcpy
