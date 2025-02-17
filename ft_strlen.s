@@ -11,7 +11,7 @@ section .text					; defines actual source code section
 	global ft_strlen			; exposes the starting point of the program
 
 ft_strlen:
-	XOR rcx, rcx				; set rcx to 0, === i = 0
+	XOR rcx, rcx				; set rcx to 0, === i = 0 (in this case its i = i ^ i)
 
 loop:
 	cmp byte [rdi + rcx], 0		; compare value of rdi + rcx to NULL, === *(str + i) == 0
