@@ -7,6 +7,8 @@
 ;   remaining parameters are pushed into the stack in reverse order
 ;   so when popped it will be in order
 
+section .note.GNU-stack
+
 section .text					; defines actual source code section
 	global ft_strlen			; exposes the starting point of the program
 
