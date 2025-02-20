@@ -1,4 +1,4 @@
-SRC			= ft_strlen.s ft_strcpy.s\
+SRC			= ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s\
 
 OBJ			= $(SRC:.s=.o)
 
@@ -20,6 +20,7 @@ $(NAME): $(OBJ)
 
 link: $(NAME)
 	gcc $(FLAGS) main.c $(NAME) -o $(EXE)
+	@ ./exec
 
 clean:
 	rm -rf $(OBJ)
