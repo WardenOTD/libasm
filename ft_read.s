@@ -3,13 +3,13 @@ section .note.GNU-stack
 extern __errno_location
 
 section .text
-	global ft_write
+	global ft_read
 
-; ssize_t ft_write(int fd, const void *buf, size_t count)
+; ssize_t ft_read(int fd, void *buf, size_t count)
 ; rdi = fd, rsi = buf, rdx = count
 
-ft_write:
-	mov rax, 1							; syscall number for sys_write is 1
+ft_read:
+	mov rax, 0							; syscall number for sys_read is 0
 										; sys_write : rdi = fd, rsi = buf, rdx = count
 										; it's already correct so we don't mov anything
 	syscall								; call the kernel

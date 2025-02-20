@@ -3,7 +3,7 @@ section .note.GNU-stack
 section .text
 	global ft_strcmp
 
-; int ft_strcmp(char *s1, char *s2)
+; int ft_strcmp(const char *s1, const char *s2)
 ; rdi = s1, rsi = s2
 
 ft_strcmp:

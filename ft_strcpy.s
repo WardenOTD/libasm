@@ -3,7 +3,7 @@ section .note.GNU-stack				; versions binutils 2.39+ will raise a warning withou
 section .text
 	global ft_strcpy
 
-; char *ft_strcpy(char *dst, char *src)
+; char *ft_strcpy(char *dst, const char *src)
 ; rdi = dst, rsi = src
 ft_strcpy:
 	XOR rcx, rcx					; set rcx to 0

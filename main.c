@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <fcntl.h>
 
 /*	Ah yes coloured text,
 	displays nicely, but the code,
@@ -14,15 +15,16 @@
 #define CYAN "\033[0;3;36m"
 #define RES "\033[0m"
 
-int ft_strlen(char *str);
-char *ft_strcpy(char *dst, char *src);
-int ft_strcmp(char *s1, char *s2);
-int	ft_write(int fd, char *buf, int count);
+size_t ft_strlen(const char *str);
+char *ft_strcpy(char *dst, const char *src);
+int ft_strcmp(const char *s1, const char *s2);
+ssize_t	ft_write(int fd, const void *buf, size_t count);
+ssize_t	ft_read(int fd, void *buf, size_t count);
 
 int main(){
 	printf("%s=================\nstrlen\n=================\n%s", CYAN, RES);
-	printf("strlen: %s%d%s\n", YEL, (int)strlen("Hello World!"), RES);
-	printf("ft_strlen: %s%d%s\n\n", YEL, ft_strlen("Hello World!"), RES);
+	printf("strlen: %s%ld%s\n", YEL, strlen("Hello World!"), RES);
+	printf("ft_strlen: %s%ld%s\n\n", YEL, ft_strlen("Hello World!"), RES);
 
 	printf("%s=================\nstrcpy\n=================\n%s", CYAN, RES);
 	char *dst1 = (char *)malloc(sizeof(char) + 13);
@@ -34,60 +36,96 @@ int main(){
 
 	printf("%s=================\nstrcmp\n=================\n%s", CYAN, RES);
 	char *s1 = "Hellow World!"; char *s2 = "askdajdwuasodl";
-	printf("strcmp: %s%d%s %s■%s ", YEL, strcmp(s1, s2), RES, RED, RES);
 	printf("s1: %s %s■%s s2: %s\n", s1, RED, RES, s2);
-	printf("ft_strcmp: %s%d%s %s■%s ", YEL, ft_strcmp(s1, s2), RES, RED, RES);
-	printf("s1: %s %s■%s s2: %s\n\n", s1, RED, RES, s2);
+	printf("strcmp: %s%d%s\n", YEL, strcmp(s1, s2), RES);
+	printf("ft_strcmp: %s%d%s\n\n", YEL, ft_strcmp(s1, s2), RES);
 
 	s1 = "abc"; s2 = "abd";
-	printf("strcmp: %s%d%s %s■%s ", YEL, strcmp(s1, s2), RES, RED, RES);
 	printf("s1: %s %s■%s s2: %s\n", s1, RED, RES, s2);
-	printf("ft_strcmp: %s%d%s %s■%s ", YEL, ft_strcmp(s1, s2), RES, RED, RES);
-	printf("s1: %s %s■%s s2: %s\n\n", s1, RED, RES, s2);
+	printf("strcmp: %s%d%s\n", YEL, strcmp(s1, s2), RES);
+	printf("ft_strcmp: %s%d%s\n\n", YEL, ft_strcmp(s1, s2), RES);
 
 	s1 = "hihi"; s2 = "hihi";
-	printf("strcmp: %s%d%s %s■%s ", YEL, strcmp(s1, s2), RES, RED, RES);
 	printf("s1: %s %s■%s s2: %s\n", s1, RED, RES, s2);
-	printf("ft_strcmp: %s%d%s %s■%s ", YEL, ft_strcmp(s1, s2), RES, RED, RES);
-	printf("s1: %s %s■%s s2: %s\n\n", s1, RED, RES, s2);
+	printf("strcmp: %s%d%s\n", YEL, strcmp(s1, s2), RES);
+	printf("ft_strcmp: %s%d%s\n\n", YEL, ft_strcmp(s1, s2), RES);
 
 	s1 = "abc!"; s2 = "abc ";
-	printf("strcmp: %s%d%s %s■%s ", YEL, strcmp(s1, s2), RES, RED, RES);
 	printf("s1: %s %s■%s s2: %s\n", s1, RED, RES, s2);
-	printf("ft_strcmp: %s%d%s %s■%s ", YEL, ft_strcmp(s1, s2), RES, RED, RES);
-	printf("s1: %s %s■%s s2: %s\n\n", s1, RED, RES, s2);
+	printf("strcmp: %s%d%s\n", YEL, strcmp(s1, s2), RES);
+	printf("ft_strcmp: %s%d%s\n\n", YEL, ft_strcmp(s1, s2), RES);
 
 	s1 = "x"; s2 = "a";
-	printf("strcmp: %s%d%s %s■%s ", YEL, strcmp(s1, s2), RES, RED, RES);
 	printf("s1: %s %s■%s s2: %s\n", s1, RED, RES, s2);
-	printf("ft_strcmp: %s%d%s %s■%s ", YEL, ft_strcmp(s1, s2), RES, RED, RES);
-	printf("s1: %s %s■%s s2: %s\n\n", s1, RED, RES, s2);
+	printf("strcmp: %s%d%s\n", YEL, strcmp(s1, s2), RES);
+	printf("ft_strcmp: %s%d%s\n\n", YEL, ft_strcmp(s1, s2), RES);
 
 	printf("%s=================\nwrite\n=================\n%s", CYAN, RES);
 	write(1, RES, strlen(RES));
 	s1 = "Hellow World!\n";
-	printf("write: %s%d%s\n", YEL, (int)write(1, s1, strlen(s1)), RES);
+
+	errno = 0;
+	printf("write: %s%ld%s\n", YEL, write(1, s1, strlen(s1)), RES);
 	printf("errno: %s%d%s\n", RED, errno, RES);
 	perror("Error:"MAG);
 	write(1, RES, strlen(RES));
 	write(1, "\n", 1);
 
-	printf("ft_write: %s%d%s\n", YEL, ft_write(1, s1, strlen(s1)), RES);
+	errno = 0;
+	printf("ft_write: %s%ld%s\n", YEL, ft_write(1, s1, strlen(s1)), RES);
 	printf("errno: %s%d%s\n", RED, errno, RES);
 	perror("Error:"MAG);
 	write(1, RES, strlen(RES));
 	write(1, "\n", 1);
 
-	printf("write: %s%d%s\n", YEL, (int)write(3, s1, strlen(s1)), RES);
+	errno = 0;
+	printf("write: %s%ld%s\n", YEL, write(3, s1, strlen(s1)), RES);
 	printf("errno: %s%d%s\n", RED, errno, RES);
 	perror("Error:"MAG);
 	write(1, RES, strlen(RES));
 	write(1, "\n", 1);
 
-	printf("ft_write: %s%d%s\n", YEL, ft_write(3, s1, strlen(s1)), RES);
+	errno = 0;
+	printf("ft_write: %s%ld%s\n", YEL, ft_write(3, s1, strlen(s1)), RES);
 	printf("errno: %s%d%s\n", RED, errno, RES);
 	perror("Error:"MAG);
 	write(1, RES, strlen(RES));
 	write(1, "\n", 1);
+
+	printf("%s=================\nread\n=================\n%s", CYAN, RES);
+	dst1 = (char *)malloc(sizeof(char) + 12);
+	dst2 = (char *)malloc(sizeof(char) + 12);
+	int fd1 = open("read.txt", O_RDONLY);
+	int fde1 = open("", O_RDONLY);
+	int fd2 = open("read.txt", O_RDONLY);
+	int fde2 = open("", O_RDONLY);
+
+	for (int x = 0; x < 5; ++x){
+		printf("len1: %ld  ||  len2: %ld\n", strlen(dst1), strlen(dst2));
+		errno = 0;
+		printf("read: %s%ld%s\n", YEL, read(fd1, dst1, 12), RES);
+		printf("read: %s%s || len: %ld%s\n", YEL, dst1, strlen(dst1), RES);
+		printf("errno: %s%d%s\n", RED, errno, RES);
+		perror("Error:"MAG);
+		write(1, RES, strlen(RES));
+		write(1, "\n", 1);
+
+		errno = 0;
+		printf("ft_read: %s%ld%s\n", YEL, ft_read(fd2, dst2, 16), RES);
+		printf("ft_read: %s%s || len: %ld%s\n", YEL, dst2, strlen(dst2), RES);
+		printf("errno: %s%d%s\n", RED, errno, RES);
+		perror("Error:"MAG);
+		write(1, RES, strlen(RES));
+		write(1, "\n", 1);
+		// bzero(dst1, 12);
+		// bzero(dst2, 1);
+	}
+
+	close(fd1);
+	close(fde1);
+	close(fd2);
+	close(fde2);
+	free(dst1);
+	free(dst2);
 	return (0);
 }
