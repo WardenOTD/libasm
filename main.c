@@ -11,7 +11,7 @@
 #define RED "\033[0;31m"
 #define YEL "\033[0;33m"
 #define MAG "\033[0;35m"
-#define CYAN "\033[0;36m"
+#define CYAN "\033[0;3;36m"
 #define RES "\033[0m"
 
 int ft_strlen(char *str);
