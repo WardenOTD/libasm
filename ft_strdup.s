@@ -10,42 +10,42 @@ section .text
 ; rdi = s
 
 ft_strdup:
-	mov rcx, -1
+	mov rcx, -1							; rcx = -1
 
 src_len:
-	inc rcx
-	cmp byte [rdi + rcx], 0
-	jnz src_len
+	inc rcx								; ++rcx
+	cmp byte [rdi + rcx], 0				; loop *s until null
+	jnz src_len							; if not null loop
 
 alloc:
-	push rdi
-	inc rcx
-	mov rdi, rcx
-	call malloc wrt ..plt
-	test rax, rax
-	jz error
+	push rdi							; save *s to stack
+	inc rcx								; rcx += 1 for null terminator
+	mov rdi, rcx						; move rcx to rdi to pass into malloc
+	call malloc wrt ..plt				; call malloc
+	test rax, rax						; compare rax to 0
+	jz error							; if 0 jump error
 
 prepare_copy:
-	mov rdi, rax
-	mov rcx, -1
-	pop rsi
+	mov rdi, rax						; move rax to rdi (our allocated pointer)
+	mov rcx, -1							; rcx = -1
+	pop rsi								; restore *s into rsi
 
 copy:
-	inc rcx
-	mov byte al, [rsi + rcx]
-	mov byte [rdi + rcx], al
-	test al, al
-	jz success
-	jmp copy
+	inc rcx								; ++rcx
+	mov byte al, [rsi + rcx]			; move *s into al
+	mov byte [rdi + rcx], al			; move al into rdi
+	test al, al							; check if al is null
+	jz success							; if zero jump success
+	jmp copy							; else loop
 
 success:
-	mov rax, rdi
-	ret
+	mov rax, rdi						; move rdi to rax to return
+	ret									; return
 
 error:
-	pop rdi
-	mov r8, rax
-	call __errno_location wrt ..plt
-	mov [rax], r8
-	mov rax, 0
-	ret
+	pop rdi								; empty the stack in case malloc failed
+	mov r8, rax							; move rax into r8
+	call __errno_location wrt ..plt		; get address of errno
+	mov [rax], r8						; put r8 into errno
+	mov rax, 0							; return 0 because strdup returns null on error
+	ret									; return
