@@ -8,6 +8,10 @@ section .text
 ; ssize_t ft_write(int fd, const void *buf, size_t count)
 ; rdi = fd, rsi = buf, rdx = count
 
+check:
+	test rdx, rdx						; check if negative number
+	js exit_error						; jump to exit_error if negative
+
 ft_write:
 	mov rax, 1							; syscall number for sys_write is 1
 										; sys_write : rdi = fd, rsi = buf, rdx = count
@@ -26,5 +30,7 @@ error:
 	call __errno_location wrt ..plt		; __errno_location returns address of errno in c
 										; wrt ..plt to fix errors regarding position independant code (PIC)
 	mov [rax], r8						; move sys_write error into errno
+
+exit_error:
 	mov rax, -1							; -1 as return value
 	ret									; return

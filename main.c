@@ -92,9 +92,37 @@ int main(){
 	write(1, RES, strlen(RES));
 	write(1, "\n", 1);
 
+	errno = 0;
+	printf("write: %s%ld%s\n", YEL, write(1, s1, strlen(s1) - 15), RES);
+	printf("errno: %s%d%s\n", RED, errno, RES);
+	perror("Error:"MAG);
+	write(1, RES, strlen(RES));
+	write(1, "\n", 1);
+
+	errno = 0;
+	printf("ft_write: %s%ld%s\n", YEL, ft_write(1, s1, strlen(s1) - 15), RES);
+	printf("errno: %s%d%s\n", RED, errno, RES);
+	perror("Error:"MAG);
+	write(1, RES, strlen(RES));
+	write(1, "\n", 1);
+
+	errno = 0;
+	printf("write: %s%ld%s\n", YEL, write(1, s1, strlen(s1) + 15), RES);
+	printf("errno: %s%d%s\n", RED, errno, RES);
+	perror("Error:"MAG);
+	write(1, RES, strlen(RES));
+	write(1, "\n", 1);
+
+	errno = 0;
+	printf("ft_write: %s%ld%s\n", YEL, ft_write(1, s1, strlen(s1) + 15), RES);
+	printf("errno: %s%d%s\n", RED, errno, RES);
+	perror("Error:"MAG);
+	write(1, RES, strlen(RES));
+	write(1, "\n", 1);
+
 	printf("%s=================\nread\n=================\n%s", CYAN, RES);
-	dst1 = (char *)malloc(sizeof(char) + 12);
-	dst2 = (char *)malloc(sizeof(char) + 12);
+	dst1 = (char *)calloc(sizeof(char), 12);
+	dst2 = (char *)calloc(sizeof(char), 12);
 	int fd1 = open("read.txt", O_RDONLY);
 	int fde1 = open("", O_RDONLY);
 	int fd2 = open("read.txt", O_RDONLY);
@@ -111,7 +139,7 @@ int main(){
 		write(1, "\n", 1);
 
 		errno = 0;
-		printf("ft_read: %s%ld%s\n", YEL, ft_read(fd2, dst2, 16), RES);
+		printf("ft_read: %s%ld%s\n", YEL, ft_read(fd2, dst2, 12), RES);
 		printf("ft_read: %s%s || len: %ld%s\n", YEL, dst2, strlen(dst2), RES);
 		printf("errno: %s%d%s\n", RED, errno, RES);
 		perror("Error:"MAG);
