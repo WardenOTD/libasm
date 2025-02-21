@@ -145,9 +145,23 @@ int main(){
 		perror("Error:"MAG);
 		write(1, RES, strlen(RES));
 		write(1, "\n", 1);
-		// bzero(dst1, 12);
-		// bzero(dst2, 1);
 	}
+
+	errno = 0;
+	printf("read invalid fd: %s%ld%s\n", YEL, read(fde1, dst1, 12), RES);
+	printf("read invalid fd: %s%s || len: %ld%s\n", YEL, dst1, strlen(dst1), RES);
+	printf("errno: %s%d%s\n", RED, errno, RES);
+	perror("Error:"MAG);
+	write(1, RES, strlen(RES));
+	write(1, "\n", 1);
+
+	errno = 0;
+	printf("ft_read invalid fd: %s%ld%s\n", YEL, ft_read(fde2, dst2, 12), RES);
+	printf("ft_read invalid fd: %s%s || len: %ld%s\n", YEL, dst2, strlen(dst2), RES);
+	printf("errno: %s%d%s\n", RED, errno, RES);
+	perror("Error:"MAG);
+	write(1, RES, strlen(RES));
+	write(1, "\n", 1);
 
 	close(fd1);
 	close(fde1);
