@@ -1,7 +1,7 @@
 section .note.GNU-stack			; versions binutils 2.39+ will raise a warning without this section
 
-; size_t ft_strlen(const char *str)
-; *str is placed into rdi by default
+; size_t ft_strlen(const char *s)
+; *s is placed into rdi by default
 section .text					; defines actual source code section
 	global ft_strlen			; exposes the starting point of the program
 
