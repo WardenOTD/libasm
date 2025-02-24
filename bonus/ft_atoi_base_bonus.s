@@ -7,31 +7,31 @@ section .text
 ; rdi = *str, rsi = *base
 
 ft_atoi_base:
-	xor rax, rax
-	mov rcx, -1
+	xor rax, rax					; set rax to 0
+	mov rcx, -1						; set rcx to -1
 
 check_base:
-	inc rcx
-	cmp byte [rsi + rcx], 0
-	jz interrupt
+	inc rcx							; ++rcx
+	cmp byte [rsi + rcx], 0			; cmp *base+rcx to null
+	jz interrupt					; if zero jump
 
 check_invalid_low:
-	cmp byte [rsi + rcx], 0x09
-	jae check_invalid_high
-	jmp reset_counter_base_dup
+	cmp byte [rsi + rcx], 0x09		; compare \t
+	jae check_invalid_high			; if above or equal, jump
+	jmp reset_counter_base_dup		; else jmp to duplicate check
 
 check_invalid_high:
-	cmp byte [rsi + rcx], 0x0D
-	jbe exit_err
-	cmp byte [rsi + rcx], 0x20
-	je exit_err
-	cmp byte [rsi + rcx], 0x2B
-	je exit_err
-	cmp byte [rsi + rcx], 0x2D
-	je exit_err
+	cmp byte [rsi + rcx], 0x0D		; compare \r
+	jbe exit_err					; if between \t and \r jump exit
+	cmp byte [rsi + rcx], 0x20		; compare space
+	je exit_err						; if equal jump exit
+	cmp byte [rsi + rcx], 0x2B		; compare plus
+	je exit_err						; if equal jump exit
+	cmp byte [rsi + rcx], 0x2D		; compare minus
+	je exit_err						; if equal jump exit
 
 reset_counter_base_dup:
-	mov r8, rcx
+	mov r8, rcx						; r8 = rcx
 
 check_base_dup:
 	inc r8
