@@ -7,6 +7,8 @@ section .text
 ; rdi = *str, rsi = *base
 
 ft_atoi_base:
+	push rbp
+	mov rbp, rsp
 	xor rax, rax					; set rax to 0
 	mov rcx, -1						; set rcx to -1
 
@@ -34,57 +36,72 @@ reset_counter_base_dup:
 	mov r8, rcx						; r8 = rcx
 
 check_base_dup:
-	inc r8
-	cmp byte [rsi + r8], 0
-	jz check_base
-	mov r9b, [rsi + r8]
-	cmp byte [rsi + rcx], r9b
-	je exit_err
-	jmp check_base_dup
+	inc r8							; ++r8
+	cmp byte [rsi + r8], 0			; compare null
+	jz check_base					; if zero jump back to check_base
+	mov r9b, [rsi + r8]				; mov next to r9b
+	cmp byte [rsi + rcx], r9b		; compore current with next
+	je exit_err						; if equal exit
+	jmp check_base_dup				; else loop
 
 interrupt:
-	cmp rcx, 1
-	jbe exit_err
+	cmp rcx, 1						; check base of len
+	jbe exit_err					; if 1 or less exit
 
 prepare_base:
-	push rsi
-	push rcx
-	call ft_atoi
+	push rsi						; save rsi (our base)
+	push rcx						; save rcx (our length of base)
+	call ft_atoi					; call atoi on rdi
+	cmp rax, 0						; compare atoi return to 0
+	jz exit_err						; if zero exit
+	pop rcx							; restore rcx
+	pop rsi							; restore base
+	push rbx						; push rbx
+	mov rbx, rcx					; rbx == rcx
+	xor r9b, r9b					; reset r9b to 0
+	xor rcx, rcx					; set rcx to 0
+
+check_negative:
 	cmp rax, 0
-	jz exit_err
-	pop rcx
-	pop rsi
-	push rbx
-	mov rbx, rcx
-	xor r9b, r9b
-	xor rdx, rdx
-	xor rcx, rcx
+	mov r8, 1
+	jb set_negative
+	jmp convert_base
+
+set_negative:
+	neg r8
+	neg rax
 
 convert_base:
-	div rbx
-	mov r9b, [rsi + rdx]
-	push r9
-	inc rcx
-	cmp rax, 0
-	jnz convert_base
-	mov rbx, 10
+	xor rdx, rdx					; set rdx to 0
+	div rbx							; divide rax by rbx
+	jc rebuild_base					; jump if overflow, return what we have so far
+	movzx r9, byte [rsi + rdx]		; mov into r9b *(rsi + rdx)
+	push r9							; push r9
+	inc rcx							; ++rcx(counting how many times we push)
+	cmp rax, 0						; cmp rax to 0
+	jnz convert_base				; if not zero loop
+	mov rbx, 10						; else set rbx = 10
 
 rebuild_base:
-	pop r9
-	dec rcx
-	mul rax
-	add rax, r9
-	cmp rcx, 0
-	jnz rebuild_base
+	pop r9							; restore r9
+	dec rcx							; --rcx
+	mul rbx							; multiply rax by rbx
+	add rax, r9						; add r9 to rax
+	cmp rcx, 0						; compare rcx to 0
+	jnz rebuild_base				; if not zero loop
 
 exit:
-	pop rbx
-	ret
+	pop rbx							; restore rbx
+	mul r8							; multiply by sign
+
+return:
+	mov rsp, rbp
+	pop rbp
+	ret								; return
 
 exit_err:
-	xor rax, rax
-	ret
-
+	xor rax, rax					; set return value to 0
+	jmp return
 
 ; ================================================================================= ;
 
@@ -92,6 +109,8 @@ exit_err:
 ; rdi = *str
 
 ft_atoi:
+	push rbp
+	mov rbp, rsp
 	push rbx						; rbx must be pushed whenever used and restored after
 	mov rbx, 10						; set rbx to 10, this is our multiplier
 	xor rax, rax					; set rax to 0
@@ -148,4 +167,6 @@ save_num:
 done:
 	pop rbx							; restore rbx
 	mul r8							; multiply rax by our sign
+	mov rsp, rbp
+	pop rbp
 	ret								; return
