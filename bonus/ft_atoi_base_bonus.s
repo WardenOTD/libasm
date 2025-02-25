@@ -9,6 +9,7 @@ section .text
 ft_atoi_base:
 	push rbp
 	mov rbp, rsp
+	push rbx						; rbx must be pushed whenever used and restored after
 	xor rax, rax					; set rax to 0
 	mov rcx, -1						; set rcx to -1
 
@@ -47,72 +48,14 @@ check_base_dup:
 interrupt:
 	cmp rcx, 1						; check base of len
 	jbe exit_err					; if 1 or less exit
-
-prepare_base:
-	push rsi						; save rsi (our base)
-	push rcx						; save rcx (our length of base)
-	call ft_atoi					; call atoi on rdi
-	cmp rax, 0						; compare atoi return to 0
-	jz exit_err						; if zero exit
-	pop rcx							; restore rcx
-	pop rsi							; restore base
-	push rbx						; push rbx
-	mov rbx, rcx					; rbx == rcx
-	xor r9b, r9b					; reset r9b to 0
-	xor rcx, rcx					; set rcx to 0
-
-check_negative:
-	cmp rax, 0						; compare with 0
-	mov r8, 1						; set r8 as 1, our sign
-	jb set_negative					; less than 0 jump
-	jmp convert_base				; else jump convert_base
-
-set_negative:
-	neg r8							; invert our sign
-	neg rax							; invert our integer to be positive
-
-convert_base:
-	xor rdx, rdx					; set rdx to 0
-	div rbx							; divide rax by rbx
-	jc rebuild_base					; jump if overflow, return what we have so far
-	movzx r9, byte [rsi + rdx]		; mov into r9b *(rsi + rdx)
-	push r9							; push r9
-	inc rcx							; ++rcx(counting how many times we push)
-	cmp rax, 0						; cmp rax to 0
-	jnz convert_base				; if not zero loop
-	mov rbx, 10						; else set rbx = 10
-
-rebuild_base:
-	pop r9							; restore r9
-	dec rcx							; --rcx
-	mul rbx							; multiply rax by rbx
-	add rax, r9						; add r9 to rax
-	cmp rcx, 0						; compare rcx to 0
-	jnz rebuild_base				; if not zero loop
-
-exit:
-	pop rbx							; restore rbx
-	mul r8							; multiply by sign
-
-return:
-	mov rsp, rbp
-	pop rbp
-	ret								; return
-
-exit_err:
-	xor rax, rax					; set return value to 0
-	jmp return
+	mov rbx, rcx
 
 ; ================================================================================= ;
-
 ; int	ft_atoi(char *str)
 ; rdi = *str
+; ================================================================================= ;
 
 ft_atoi:
-	push rbp
-	mov rbp, rsp
-	push rbx						; rbx must be pushed whenever used and restored after
-	mov rbx, 10						; set rbx to 10, this is our multiplier
 	xor rax, rax					; set rax to 0
 	mov rcx, -1						; set rcx to -1
 	mov r8, 1						; set r8 to 1, this will be our sign
@@ -148,25 +91,98 @@ neg_equal:
 	jmp check_sign					; loop
 
 count:
+	xor r11, r11
+
+loop_actual_int_len:
+	cmp byte [rdi + rcx], 0
+	jz prepare_copy
+	cmp byte [rdi + rcx], 0x20
+	je prepare_copy
+	cmp byte [rdi + rcx], 0x09
+	je prepare_copy
+	cmp byte [rdi + rcx], 0x0A
+	je prepare_copy
+	cmp byte [rdi + rcx], 0x0B
+	je prepare_copy
+	cmp byte [rdi + rcx], 0x0C
+	je prepare_copy
+	cmp byte [rdi + rcx], 0x0D
+	je prepare_copy
+	inc rcx
+	inc r11
+	jmp loop_actual_int_len
+
+prepare_copy:
+	sub rcx, r11
+	dec r11
+
+copy_actual_int:
+	cmp r11, 0
+	jb done
 	mov r9b, byte [rdi + rcx]		; set r9b (8bit register of r9) to current byte in str
-	inc rcx							; ++rcx, ready for next call
-	cmp byte r9b, 0					; compare to null
-	jz done							; if null exit
-	cmp byte r9b, 0x30				; compare to ascii 0
-	jb done							; if less than, exit
-	cmp byte r9b, 0x39				; compare to ascii 9, [1 to 8 is encased in here]
-	ja done							; if greater than, exit
+	jmp init_find_index
+
+init_find_index:
+	push rcx
+	mov rcx, -1
+
+find_index:
+	inc rcx
+	cmp byte [rsi + rcx], 0
+	jz done
+	cmp r9b, [rsi + rcx]
+	jne find_index
+	mov r9, rcx
+	pop rcx
 
 save_num:
-	mul rbx							; mul dest is hardcoded at rax, so rax *= rbx
+	push rax
+	mov rax, rbx
+	push r11
+	cmp r11, 0
+	jz last_digit
+	dec r11
+
+mul_loop:
+	cmp r11, 0
+	je mul_loop_end
+	mul rbx
+	dec r11
+	jmp mul_loop
+
+last_digit:
+	mov rax, 1
+
+mul_loop_end:
+	pop r11
+	push rax
+	push r9
+	pop rax
+	pop r9
+	mul r9
+	push rax
+	pop r9
+	pop rax
 	jc done							; if carry (overflow) exit with what we have
-	sub r9b, 0x30					; subtract r9b with ascii 0, giving us an int
 	add rax, r9						; rax + r9, [10 + 1 == 11]
-	jmp count						; loop
+	inc rcx							; ++rcx, ready for next call
+	dec r11
+	jmp copy_actual_int						; loop
+
+help:
+	neg rax
 
 done:
+	cmp rax, 0
+	jb help
 	pop rbx							; restore rbx
 	mul r8							; multiply rax by our sign
 	mov rsp, rbp
 	pop rbp
 	ret								; return
+
+exit_err:
+	mov rsp, rbp
+	pop rbp
+	xor rax, rax
+	ret
