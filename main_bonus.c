@@ -61,5 +61,16 @@ int main(){
 	printf("%sBase: %s%s%s\n33!?: %s%d%s\n", RED, MAG, BS2, RED, YEL, ft_atoi_base("33!?", BS2), RES);
 	printf("\n");
 
+	printf("%sBase: %s%s%s\nempty: %s%d%s\n", RED, MAG, "", RED, YEL, ft_atoi_base("empty", ""), RES);
+	printf("%sBase: %s%s%s\nspace only: %s%d%s\n", RED, MAG, "    ", RED, YEL, ft_atoi_base("space only", "    "), RES);
+	printf("%sBase: %s%s%s\nspace after: %s%d%s\n", RED, MAG, "b ", RED, YEL, ft_atoi_base("space after", "b "), RES);
+	printf("%sBase: %s%s%s\nspace before: %s%d%s\n", RED, MAG, " p", RED, YEL, ft_atoi_base("space before", " p"), RES);
+	printf("%sBase: %s%s%s\nspace between: %s%d%s\n", RED, MAG, "2pal; o", RED, YEL, ft_atoi_base("space between", "2pal; o"), RES);
+	printf("%sBase: %s%s%s\ntab before: %s%d%s\n", RED, MAG, "	d", RED, YEL, ft_atoi_base("tab before", "	d"), RES);
+	printf("%sBase: %s%s%s\ntab after: %s%d%s\n", RED, MAG, "a	", RED, YEL, ft_atoi_base("tab after", "a	"), RES);
+	printf("%sBase: %s%s%s\ntab between: %s%d%s\n", RED, MAG, "a	d", RED, YEL, ft_atoi_base("tab between", "a	d"), RES);
+	printf("%sBase: %s%s%s\nduplicate: %s%d%s\n", RED, MAG, "apwokal", RED, YEL, ft_atoi_base("duplicate", "apwokal"), RES);
+	printf("\n");
+
 	return (0);
 }
