@@ -62,14 +62,14 @@ prepare_base:
 	xor rcx, rcx					; set rcx to 0
 
 check_negative:
-	cmp rax, 0
-	mov r8, 1
-	jb set_negative
-	jmp convert_base
+	cmp rax, 0						; compare with 0
+	mov r8, 1						; set r8 as 1, our sign
+	jb set_negative					; less than 0 jump
+	jmp convert_base				; else jump convert_base
 
 set_negative:
-	neg r8
-	neg rax
+	neg r8							; invert our sign
+	neg rax							; invert our integer to be positive
 
 convert_base:
 	xor rdx, rdx					; set rdx to 0
