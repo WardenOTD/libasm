@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define RED "\033[0;31m"
 #define YEL "\033[0;33m"
@@ -14,7 +16,49 @@
 #define BS "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 #define BS2 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$^&*()_={}[]|;:',.?"
 
+typedef struct		s_list
+{
+	void			*data;
+	struct s_list	*next;
+}					t_list;
+
 int	ft_atoi_base(char *str, char *base);
+void ft_list_push_front(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+
+int print_lst(t_list *list, int print){
+	int i = 0;
+	while (list){
+		if (print)
+			printf("%s~~~ %s%s\n", RED, YEL, (char*)list->data);
+		list = list->next;
+		i++;
+	}
+	return (i);
+}
+
+void ft_lstclear(t_list **list){
+	t_list *tmp;
+	while (*list){
+		tmp = (*list)->next;
+		if ((*list)->data)
+			free((*list)->data);
+		free(*list);
+		*list = tmp;
+	}
+}
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*head;
+
+	head = (t_list *)malloc(sizeof(t_list));
+	if (!head)
+		return (0);
+	head->data = content;
+	head->next = 0;
+	return (head);
+}
 
 int main(){
 	printf("%s=================\natoi_base\n=================\n%s", CYAN, RES);
@@ -72,5 +116,28 @@ int main(){
 	printf("%sBase: %s%s%s\nduplicate: %s%d%s\n", RED, MAG, "apwokal", RED, YEL, ft_atoi_base("duplicate", "apwokal"), RES);
 	printf("\n");
 
+	printf("%s=================\nlist_push_front\n=================\n%s", CYAN, RES);
+	t_list *lst = ft_lstnew(strdup("1st List"));
+	print_lst(lst, 1);
+	printf("%s---------------------\n", MAG);
+	lst->next = ft_lstnew(strdup("2nd List"));
+	lst->next->next = ft_lstnew(strdup("3rd List"));
+	print_lst(lst, 1);
+	printf("%s---------------------\n", MAG);
+	ft_list_push_front(&lst, strdup("New List"));
+	print_lst(lst, 1);
+	printf("%s---------------------\n", MAG);
+	ft_list_push_front(&lst, strdup("Another New List"));
+	print_lst(lst, 1);
+	printf("%s---------------------\n", MAG);
+	ft_list_push_front(&lst, NULL);
+	print_lst(lst, 1);
+	printf("%s", RES);
+	printf("\n");
+
+	printf("%s=================\nlist_size\n=================\n%s", CYAN, RES);
+	printf("Size of list: %s%d%s\n", YEL, ft_list_size(lst), RES);
+	
+	ft_lstclear(&lst);
 	return (0);
 }
