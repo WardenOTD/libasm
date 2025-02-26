@@ -114,7 +114,8 @@ int main(){
 	printf("%sBase: %s%s%s\ntab after: %s%d%s\n", RED, MAG, "a	", RED, YEL, ft_atoi_base("tab after", "a	"), RES);
 	printf("%sBase: %s%s%s\ntab between: %s%d%s\n", RED, MAG, "a	d", RED, YEL, ft_atoi_base("tab between", "a	d"), RES);
 	printf("%sBase: %s%s%s\nduplicate: %s%d%s\n", RED, MAG, "apwokal", RED, YEL, ft_atoi_base("duplicate", "apwokal"), RES);
-	printf("\n");
+
+	getchar();
 
 	printf("%s=================\nlist_push_front\n=================\n%s", CYAN, RES);
 	t_list *lst = ft_lstnew(strdup("1st List"));
@@ -133,10 +134,13 @@ int main(){
 	ft_list_push_front(&lst, NULL);
 	print_lst(lst, 1);
 	printf("%s", RES);
-	printf("\n");
+
+	getchar();
 
 	printf("%s=================\nlist_size\n=================\n%s", CYAN, RES);
 	printf("Size of list: %s%d%s\n", YEL, ft_list_size(lst), RES);
+
+	getchar();
 	
 	ft_lstclear(&lst);
 	return (0);
