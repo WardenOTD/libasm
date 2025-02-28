@@ -27,9 +27,7 @@ int main(){
 	printf("strlen: %s%ld%s\n", YEL, strlen("Hello World!"), RES);
 	printf("ft_strlen: %s%ld%s\n", YEL, ft_strlen("Hello World!"), RES);
 
-	getchar();
-
-	printf("%s=================\nstrcpy\n=================\n%s", CYAN, RES);
+	printf("\n%s=================\nstrcpy\n=================\n%s", CYAN, RES);
 	char *dst1 = (char *)malloc(sizeof(char) + 13);
 	char *dst2 = (char *)malloc(sizeof(char) + 13);
 	char *src = "Hello World!";
@@ -37,9 +35,7 @@ int main(){
 	printf("ft_strcpy: %s%s%s\n", YEL, ft_strcpy(dst2, src), RES);
 	free(dst1); free(dst2);
 
-	getchar();
-
-	printf("%s=================\nstrcmp\n=================\n%s", CYAN, RES);
+	printf("\n%s=================\nstrcmp\n=================\n%s", CYAN, RES);
 	char *s1 = "Hellow World!"; char *s2 = "askdajdwuasodl";
 	printf("s1: %s %s■%s s2: %s\n", s1, RED, RES, s2);
 	printf("strcmp: %s%d%s\n", YEL, strcmp(s1, s2), RES);
@@ -65,9 +61,7 @@ int main(){
 	printf("strcmp: %s%d%s\n", YEL, strcmp(s1, s2), RES);
 	printf("ft_strcmp: %s%d%s\n", YEL, ft_strcmp(s1, s2), RES);
 
-	getchar();
-
-	printf("%s=================\nwrite\n=================\n%s", CYAN, RES);
+	printf("\n%s=================\nwrite\n=================\n%s", CYAN, RES);
 	write(1, RES, strlen(RES));
 	s1 = "Hellow World!\n";
 
@@ -122,9 +116,7 @@ int main(){
 	perror("Error:"MAG);
 	write(1, RES, strlen(RES));
 
-	getchar();
-
-	printf("%s=================\nread\n=================\n%s", CYAN, RES);
+	printf("\n%s=================\nread\n=================\n%s", CYAN, RES);
 	dst1 = (char *)calloc(sizeof(char), 12);
 	dst2 = (char *)calloc(sizeof(char), 12);
 	int fd1 = open("read.txt", O_RDONLY);
@@ -168,9 +160,7 @@ int main(){
 	close(fd2); close(fde2);
 	free(dst1); free(dst2);
 
-	getchar();
-
-	printf("%s=================\nstrdup\n=================\n%s", CYAN, RES);
+	printf("\n%s=================\nstrdup\n=================\n%s", CYAN, RES);
 	dst1 = strdup("Hello World!");
 	dst2 = ft_strdup("Hello World!");
 

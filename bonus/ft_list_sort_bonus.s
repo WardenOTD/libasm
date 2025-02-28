@@ -35,7 +35,6 @@ main_loop:
 	mov rcx, [rdi]				; rcx = *rdi, ( rcx = *current )
 	mov rbx, [rcx + 8]			; rbx = *(rcx + 8), ( rbx = next )
 	cmp rbx, 0					; check if last node
-break:
 	jz check_sort				; if zero jump
 
 compare:
@@ -46,42 +45,20 @@ compare:
 	mov rsi, [rbx]				; move next->data to rsi
 	push rcx					; save rcx
 	push rbx					; save rbx
-	xor rax, rax				; set rax to 0
 	call r9						; call function pointer
 	mov rsi, r9					; rsi = r9
 	pop rbx						; restore rbx
 	pop rcx						; restore rcx
 	pop rdi						; restore rdi
-	cmp rax, 0					; compare rax to 0
-	jbe increment				; if lesser than or equal, loop
+debug:
+	cmp eax, 0					; compare rax to 0
+	jle increment				; if lesser than or equal, loop
 
 swap:
-	push r13					; save r13
-	push r14					; save r14
-	mov r13, [rcx]				; move cur->data to r13
-	mov r13, [r13]				; dereference the string
-	mov r14, [rbx]				; move next->data to r14
-	mov r14, [r14]				; dereference the string
-
-	; mov r9, [rbx + 8]				; r9 = next->next
-	; mov [rcx + 8], r9				; current->next = next->next
-	; mov [rbx + 8], rcx				; next->next = current
 	mov r9, [rcx]				; r9 = cur->data
 	mov r10, [rbx]				; r10 = next->data
 	mov [rbx], r9				; cur->data = r9
 	mov [rcx], r10				; next->data = r10
-	; mov r9, rcx
-	; mov rcx, rbx
-	; mov rbx, r9
-
-	mov r13, [rcx]				; move cur->data to r13
-	mov r13, [r13]				; dereference the string
-	mov r14, [rbx]				; move next->data to r14
-	mov r14, [r14]				; dereference the string
-	pop r14						; restore r13
-	pop r13						; restore r14
-
-	; mov [rdi], rbx
 	jmp sort_flag				; jump to sort_flag
 
 check_sort:
