@@ -6,7 +6,7 @@ SRC			= $(addprefix mandatory/,\
 BSRC		= $(addprefix bonus/,\
 				$(addsuffix _bonus.s,\
 				ft_atoi_base ft_list_push_front ft_list_size\
-				ft_list_sort\
+				ft_list_sort ft_list_remove_if\
 				))
 
 OBJ			= $(SRC:.s=.o)

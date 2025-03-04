@@ -50,7 +50,7 @@ compare:
 	pop rbx						; restore rbx
 	pop rcx						; restore rcx
 	pop rdi						; restore rdi
-debug:
+; debug:
 	cmp eax, 0					; compare rax to 0
 	jle increment				; if lesser than or equal, loop
 

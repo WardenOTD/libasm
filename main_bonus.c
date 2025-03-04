@@ -26,6 +26,7 @@ int	ft_atoi_base(char *str, char *base);
 void ft_list_push_front(t_list **begin_list, void *data);
 int ft_list_size(t_list *begin_list);
 void ft_list_sort(t_list **begin_list, int (*cmp)());
+void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
 
 char *italy(char *str){
 	char *s = (char *)malloc(sizeof(char) * (strlen(str) + 1));
@@ -219,5 +220,49 @@ int main(){
 	}
 	printf("\n");
 	ft_lstclear(&lst);
+	
+	printf("%s=================\nlist_remove_if\n=================\n%s", CYAN, RES);
+	t_list *ls = ft_lstnew(strdup("This Exact Sentence"));
+	ft_list_push_front(&ls, strdup("this Exact Sentence"));
+	ft_list_push_front(&ls, strdup("ThIs Exact Sentence"));
+	ft_list_push_front(&ls, strdup("This exact Sentence"));
+	ft_list_push_front(&ls, strdup("This Exact sentence"));
+	ft_list_push_front(&ls, strdup("This Exact Sentence"));
+	ft_list_push_front(&ls, strdup("This Exact Santence"));
+	ft_list_push_front(&ls, strdup("This Exact Sentance"));
+	ft_list_push_front(&ls, strdup("This Ezact Sentence"));
+	ft_list_push_front(&ls, strdup("dhis Exact Sentence"));
+	ft_list_push_front(&ls, strdup("this"));
+	print_lst(ls, 1);
+	printf("%s---------------------\n", MAG);
+	ft_list_remove_if(&ls, "This Exact Sentence", &strcmp, &free);
+	print_lst(ls, 1);
+	printf("\n");
+	ft_lstclear(&ls);
 	return (0);
 }
+
+
+
+// C visualization
+// void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *)){
+// 	if (!begin_list || !*begin_list || !data_ref || !cmp || !free_fct)
+// 		return ;
+// 	t_list *tmp = *begin_list;
+// 	t_list *prev = NULL;
+// 	while (tmp){
+// 		if (!cmp(tmp->data, data_ref)){
+// 			if (prev)
+// 				prev->next = tmp->next;
+// 			else
+// 				*begin_list = tmp->next;
+// 			free_fct(tmp->data);
+// 			free(tmp);
+// 			tmp = prev ? prev->next : *begin_list;
+// 		}
+// 		else{
+// 			prev = tmp;
+// 			tmp = tmp->next;
+// 		}
+// 	}
+// }
