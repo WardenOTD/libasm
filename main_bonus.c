@@ -296,9 +296,67 @@ int main(){
 	printf("%sWithout Formating\n", RED);
 	printf("%s=====================\n", MAG);
 	sprint_lst(ls, "This Exact Sentence", 0);
-
 	ft_lstclear(&ls);
+	printf("\n");
+
+	printf("%s=====================\n", CYAN);
+	printf("Different Comparison\n");
+	printf("=====================\n");
+	ls = ft_lstnew(strdup("This Exact Sentence"));
+	ft_list_push_front(&ls, strdup("This Exact Sentence"));
+	ft_list_push_front(&ls, strdup("this Exact Sentence"));
+	ft_list_push_front(&ls, strdup("ThIs Exact Sentence"));
+	ft_list_push_front(&ls, strdup("This exact Sentence"));
+	ft_list_push_front(&ls, strdup("This Exact sentence"));
+	ft_list_push_front(&ls, strdup("This Exact Sentence"));
+	ft_list_push_front(&ls, strdup("This Exact Santence"));
+	ft_list_push_front(&ls, strdup("This Exact Sentance"));
+	ft_list_push_front(&ls, strdup("This Ezact Sentence"));
+	ft_list_push_front(&ls, strdup("dhis Exact Sentence"));
+	ft_list_push_front(&ls, strdup("this"));
+	sprint_lst(ls, "this", 0);
+	printf("\n%s---------------------\n", MAG);
+	printf("%sRemoving: %sthis%s\n", RED, ITALYMAG, RES);
+	printf("%s---------------------\n", MAG);
+	ft_list_remove_if(&ls, "this", &strcmp, &free);
+	sprint_lst(ls, "this", 1, 0);
+	printf("\n");
 	
+	printf("%s=====================\n", MAG);
+	printf("%sWithout Formating\n", RED);
+	printf("%s=====================\n", MAG);
+	sprint_lst(ls, "this", 0);
+	ft_lstclear(&ls);
+	printf("\n");
+
+	printf("%s=====================\n", CYAN);
+	printf("Different Comparison\n");
+	printf("=====================\n");
+	ls = ft_lstnew(strdup("0123456789"));
+	ft_list_push_front(&ls, strdup("2938193332"));
+	ft_list_push_front(&ls, strdup("abckawiella"));
+	ft_list_push_front(&ls, strdup("0123456789"));
+	ft_list_push_front(&ls, strdup("0123456789"));
+	ft_list_push_front(&ls, strdup("0123456789"));
+	ft_list_push_front(&ls, strdup("1234567890"));
+	ft_list_push_front(&ls, strdup("0133456789"));
+	ft_list_push_front(&ls, strdup("9238745601"));
+	ft_list_push_front(&ls, strdup("0123456789"));
+	ft_list_push_front(&ls, strdup("0123456789"));
+	ft_list_push_front(&ls, strdup("0123456789"));
+	sprint_lst(ls, "0123456789", 0);
+	printf("\n%s---------------------\n", MAG);
+	printf("%sRemoving: %s0123456789%s\n", RED, ITALYMAG, RES);
+	printf("%s---------------------\n", MAG);
+	ft_list_remove_if(&ls, "0123456789", &strcmp, &free);
+	sprint_lst(ls, "0123456789", 1, 2, 3, 7, 8, 9, 12, 0);
+	printf("\n");
+	
+	printf("%s=====================\n", MAG);
+	printf("%sWithout Formating\n", RED);
+	printf("%s=====================\n", MAG);
+	sprint_lst(ls, "0123456789", 0);
+	ft_lstclear(&ls);
 	free(ITALYMAG);
 	return (0);
 }
