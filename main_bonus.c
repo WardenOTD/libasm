@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #define RED "\033[0;31m"
 #define YEL "\033[0;33m"
@@ -39,6 +40,35 @@ char *italy(char *str){
 	s[i++] = 'm';
 	s[i] = '\0';
 	return (s);
+}
+
+void sprint_lst(t_list *list, char *to_cmp, ...){
+	va_list args;
+	va_start(args, to_cmp);
+	int i = 1;
+	int skip = va_arg(args, int);
+
+	while (list){
+		printf("%s%d %s~~~ ", MAG, i, RED);
+		if (i == skip)
+			printf("%sx\n", CYAN);
+		else{
+			if (strcmp((char*)list->data, to_cmp))
+				printf("%s%s\n", YEL, (char*)list->data);
+			else
+				printf("%s%s\n", RED, (char*)list->data);
+			list = list->next;
+		}
+		if (skip && i >= skip)
+			skip = va_arg(args, int);
+		++i;
+	}
+	while (skip != 0){
+		printf("%s%d %s~~~ %sx\n", MAG, i, RED, CYAN);
+		skip = va_arg(args, int);
+		++i;
+	}
+	va_end(args);
 }
 
 int print_lst(t_list *list, int print){
@@ -243,6 +273,7 @@ int main(){
 	
 	printf("%s=================\nlist_remove_if\n=================\n%s", CYAN, RES);
 	t_list *ls = ft_lstnew(strdup("This Exact Sentence"));
+	ft_list_push_front(&ls, strdup("This Exact Sentence"));
 	ft_list_push_front(&ls, strdup("this Exact Sentence"));
 	ft_list_push_front(&ls, strdup("ThIs Exact Sentence"));
 	ft_list_push_front(&ls, strdup("This exact Sentence"));
@@ -253,15 +284,21 @@ int main(){
 	ft_list_push_front(&ls, strdup("This Ezact Sentence"));
 	ft_list_push_front(&ls, strdup("dhis Exact Sentence"));
 	ft_list_push_front(&ls, strdup("this"));
-	print_lst(ls, 1);
-	printf("%s---------------------\n", MAG);
+	sprint_lst(ls, "This Exact Sentence", 0);
+	printf("\n%s---------------------\n", MAG);
 	printf("%sRemoving: %sThis Exact Sentence%s\n", RED, ITALYMAG, RES);
+	printf("%s---------------------\n", MAG);
 	ft_list_remove_if(&ls, "This Exact Sentence", &strcmp, &free);
-	print_lst(ls, 1);
+	sprint_lst(ls, "This Exact Sentence", 6, 11, 12, 0);
 	printf("\n");
+	
+	printf("%s=====================\n", MAG);
+	printf("%sWithout Formating\n", RED);
+	printf("%s=====================\n", MAG);
+	sprint_lst(ls, "This Exact Sentence", 0);
+
 	ft_lstclear(&ls);
-
-
+	
 	free(ITALYMAG);
 	return (0);
 }
