@@ -42,13 +42,13 @@ compare:
 	push rbx					; save rbx
 	push r12					; save r12
 
-	push r14
-	push r15
-	mov r14, rbx				; debug purposes [address of rbx]
-	mov r15, [rbx]				; debug purposes [data of rbx]
-debug:
-	pop r15
-	pop r14
+; 	push r14
+; 	push r15
+; 	mov r14, rbx				; debug purposes [address of rbx]
+; 	mov r15, [rbx]				; debug purposes [data of rbx]
+; debug:
+; 	pop r15
+; 	pop r14
 
 	mov rdi, [rbx]				; move cur->data to rdi
 	call rdx					; call cmp
