@@ -96,29 +96,41 @@ count:
 loop_actual_int_len:
 	cmp byte [rdi + rcx], 0			; compare to 0
 	jz prepare_copy					; if zero jump
-	cmp byte [rdi + rcx], 0x20		; compare to space
-	je prepare_copy					; if equal jump
-	cmp byte [rdi + rcx], 0x09		; compare to \t
-	je prepare_copy					; if equal jump
-	cmp byte [rdi + rcx], 0x0A		; compare to \n
-	je prepare_copy					; if equal jump
-	cmp byte [rdi + rcx], 0x0B		; compare to \v
-	je prepare_copy					; if equal jump
-	cmp byte [rdi + rcx], 0x0C		; compare to \f
-	je prepare_copy					; if equal jump
-	cmp byte [rdi + rcx], 0x0D		; compare to \r
-	je prepare_copy					; if equal jump
+	jmp look_up_base				; else jump
+
+loop_actual_int_len_cut:
 	inc rcx							; ++rcx
 	inc r11							; ++r11
 	jmp loop_actual_int_len			; loop
 
+look_up_base:
+	push r12						; store r12
+	push r13						; store r13
+	mov r12, -1						; set r12 to -1
+	mov r13b, byte [rdi + rcx]		; set r13b as current byte in str
+
+look_up_base_loop:
+	inc r12							; ++r12
+	cmp byte [rsi + r12], 0			; compare to 0
+	jz prepare_copy					; if zero jump
+	cmp r13b, [rsi + r12]		; compare current byte in str with current byte in base
+	jne look_up_base_loop			; if not equal loop
+	pop r13							; restore r13
+	pop r12							; restore r12
+	jmp loop_actual_int_len_cut		; jump
+
 prepare_copy:
 	sub rcx, r11					; subtract rcx by r11 (return to start of digit)
+	cmp r11, 0						; compare len of digit to 0
+	jb done							; if less than jump
 	dec r11							; --r11 (base conversion starts with 0 index)
+	jmp skip_cmp					; jump
 
 copy_actual_int:
 	cmp r11, 0						; compare len of digit to 0
 	jb done							; if less than jump
+
+skip_cmp:
 	mov r9b, byte [rdi + rcx]		; set r9b (8bit register of r9) to current byte in str
 	jmp init_find_index				; jump
 

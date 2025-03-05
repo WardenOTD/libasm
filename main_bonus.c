@@ -135,6 +135,25 @@ int main(){
 	printf("%sBase: %s%s%s\ntab between: %s%d%s\n", RED, MAG, "a	d", RED, YEL, ft_atoi_base("tab between", "a	d"), RES);
 	printf("%sBase: %s%s%s\nduplicate: %s%d%s\n\n", RED, MAG, "apwokal", RED, YEL, ft_atoi_base("duplicate", "apwokal"), RES);
 
+	printf("%sBase: %s%s%s\n33a: %s%d%s\n", RED, MAG, "1234", RED, YEL, ft_atoi_base("33a", "1234"), RES);
+	printf("%sBase: %s%s%s\n33: %s%d%s\n\n", RED, MAG, "1234", RED, YEL, ft_atoi_base("33", "1234"), RES);
+	printf("%sBase: %s%s%s\n33abc: %s%d%s\n", RED, MAG, "1234abc", RED, YEL, ft_atoi_base("33abc", "1234abc"), RES);
+	printf("%sBase: %s%s%s\n33abc7: %s%d%s\n\n", RED, MAG, "1234abc", RED, YEL, ft_atoi_base("33abc7", "1234abc"), RES);
+	printf("%sBase: %s%s%s\n33abx: %s%d%s\n", RED, MAG, "1234abx", RED, YEL, ft_atoi_base("33abx", "1234abx"), RES);
+	printf("%sBase: %s%s%s\n33abxp: %s%d%s\n\n", RED, MAG, "1234abx", RED, YEL, ft_atoi_base("33abxp", "1234abx"), RES);
+	printf("%sBase: %s%s%s\n33: %s%d%s\n", RED, MAG, "34", RED, YEL, ft_atoi_base("33", "34"), RES);
+	printf("%sBase: %s%s%s\n33213: %s%d%s\n\n", RED, MAG, "34", RED, YEL, ft_atoi_base("33213", "34"), RES);
+	printf("%sBase: %s%s%s\n3: %s%d%s\n\n", RED, MAG, "34", RED, YEL, ft_atoi_base("3", "34"), RES);
+	printf("%sBase: %s%s%s\n44: %s%d%s\n", RED, MAG, "34", RED, YEL, ft_atoi_base("44", "34"), RES);
+	printf("%sBase: %s%s%s\n44213: %s%d%s\n\n", RED, MAG, "34", RED, YEL, ft_atoi_base("44213", "34"), RES);
+	printf("%sBase: %s%s%s\n4: %s%d%s\n\n", RED, MAG, "34", RED, YEL, ft_atoi_base("4", "34"), RES);
+	printf("%sBase: %s%s%s\n33[]???: %s%d%s\n", RED, MAG, "]12?34[", RED, YEL, ft_atoi_base("33[]???", "]12?34["), RES);
+	printf("%sBase: %s%s%s\n33[]??\?!: %s%d%s\n\n", RED, MAG, "]12?34[", RED, YEL, ft_atoi_base("33[]??\?!", "]12?34["), RES);
+	printf("%sBase: %s%s%s\n33[: %s%d%s\n", RED, MAG, "]12?34[", RED, YEL, ft_atoi_base("33[", "]12?34["), RES);
+	printf("%sBase: %s%s%s\n33[!]???: %s%d%s\n\n", RED, MAG, "]12?34[", RED, YEL, ft_atoi_base("33[!]???", "]12?34["), RES);
+	printf("%sBase: %s%s%s\n33: %s%d%s\n", RED, MAG, "1234!", RED, YEL, ft_atoi_base("33", "1234!"), RES);
+	printf("%sBase: %s%s%s\n33@!: %s%d%s\n\n", RED, MAG, "1234!", RED, YEL, ft_atoi_base("33@!", "1234!"), RES);
+
 	printf("%s=================\nlist_push_front\n=================\n%s", CYAN, RES);
 	t_list *list = ft_lstnew(strdup("1st List"));
 	print_lst(list, 1);
@@ -192,8 +211,9 @@ int main(){
 	
 	printf("%s---------------------\n", MAG);
 	printf("%sDIF\n", RED);
+	char *ITALYMAG = italy(MAG);
 	for (t_list *tmp = lst; tmp->next; tmp = tmp->next){
-		printf("%s%s:%-8s", italy(MAG), (char *)tmp->data, RES);
+		printf("%s%s:%-8s", ITALYMAG, (char *)tmp->data, RES);
 		// char msg[1000];
 		// strcpy(msg, "");
 		for (t_list *nxt = lst; nxt->next; nxt = nxt->next){
@@ -235,10 +255,14 @@ int main(){
 	ft_list_push_front(&ls, strdup("this"));
 	print_lst(ls, 1);
 	printf("%s---------------------\n", MAG);
+	printf("%sRemoving: %sThis Exact Sentence%s\n", RED, ITALYMAG, RES);
 	ft_list_remove_if(&ls, "This Exact Sentence", &strcmp, &free);
 	print_lst(ls, 1);
 	printf("\n");
 	ft_lstclear(&ls);
+
+
+	free(ITALYMAG);
 	return (0);
 }
 
