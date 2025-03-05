@@ -49,7 +49,7 @@ void sprint_lst(t_list *list, char *to_cmp, ...){
 	int skip = va_arg(args, int);
 
 	while (list){
-		printf("%s%d %s~~~ ", MAG, i, RED);
+		printf("%s%4d %s~~~ ", MAG, i, RED);
 		if (i == skip)
 			printf("%sx\n", CYAN);
 		else{
@@ -64,7 +64,7 @@ void sprint_lst(t_list *list, char *to_cmp, ...){
 		++i;
 	}
 	while (skip != 0){
-		printf("%s%d %s~~~ %sx\n", MAG, i, RED, CYAN);
+		printf("%s%4d %s~~~ %sx\n", MAG, i, RED, CYAN);
 		skip = va_arg(args, int);
 		++i;
 	}
