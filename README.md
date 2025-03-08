@@ -49,3 +49,10 @@ On newer version of **GNU Binutils (2.39+)**, a warning is raised when linking f
 
 *extra info of this warning:*
 [git.kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ffcf9c5700e49c0aee42dcba9a12ba21338e8136)
+
+## `call [extern function] wrt ..plt`
+This is needed to call external functions within you assembly code.\
+Without `wrt ..plt` you will get an error similar to\
+`relocatation against undefined symbol [function] ...`
+
+* FYI, `wrt` stands for `with respect to` and `..plt` is `procedure linkage table`.
